@@ -8,8 +8,8 @@ const Hero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
     <section
       ref={ref}
       className={cn(
-        "relative overflow-hidden bg-primary-100 px-8 py-16 md:py-24",
-        className,
+        "relative overflow-hidden bg-primary-100 px-8 pt-36 pb-16 md:pt-44 md:pb-24",
+        className
       )}
       {...props}
     >
