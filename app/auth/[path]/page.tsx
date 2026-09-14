@@ -15,7 +15,7 @@ export default async function AuthPage({
   const { path } = await params;
 
   return (
-    <main className="flex grow items-center justify-center px-4 py-12">
+    <main className="auth-ui-scope flex grow items-center justify-center px-4 py-12">
       <AuthView path={path} />
     </main>
   );
