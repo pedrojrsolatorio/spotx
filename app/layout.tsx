@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
+import type { ReactNode } from "react";
+import { authConfigured } from "@/lib/auth/server";
+import { Providers } from "@/app/providers";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -19,13 +22,15 @@ export const metadata: Metadata = {
   description: "AI-powered learning platform with intelligent content search",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
       className={`${poppins.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {authConfigured ? <Providers>{children}</Providers> : children}
+      </body>
     </html>
   );
 }
