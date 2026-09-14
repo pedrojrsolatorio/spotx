@@ -15,7 +15,7 @@ export default async function AccountPage({
   const { path } = await params;
 
   return (
-    <main className="flex grow justify-center px-4 py-12">
+    <main className="auth-ui-scope flex grow justify-center px-4 py-12">
       <AccountView path={path} />
     </main>
   );
