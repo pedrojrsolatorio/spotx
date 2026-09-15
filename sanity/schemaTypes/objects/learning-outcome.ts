@@ -12,6 +12,9 @@ const iconOptions = [
   { title: 'Shield', value: 'shield' },
   { title: 'Puzzle', value: 'puzzle' },
   { title: 'Star', value: 'star' },
+  { title: 'Gauge', value: 'gauge' },
+  { title: 'Sparkles', value: 'sparkles' },
+  { title: 'Workflow', value: 'workflow' },
 ]
 
 export const learningOutcome = defineType({

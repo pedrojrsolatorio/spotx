@@ -29,7 +29,7 @@ export const COURSE_QUERY = defineQuery(/* groq */ `
         _id,
         title,
         "slug": slug.current,
-        "poster": poster { ${imageFragment} },
+        "thumbnail": thumbnail { ${imageFragment} },
         duration,
         freePreview,
         studentCount

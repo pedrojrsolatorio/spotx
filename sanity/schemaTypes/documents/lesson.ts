@@ -43,11 +43,20 @@ export const lesson = defineType({
       validation: (rule) => rule.required().uri({ scheme: ['https'] }),
     }),
     defineField({
-      name: 'poster',
+      name: 'thumbnail',
       type: 'image',
-      title: 'Poster / thumbnail',
+      title: 'Thumbnail',
       fieldset: 'video',
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Describes the thumbnail for screen readers.',
+          validation: (rule) => rule.max(160),
+        }),
+      ],
     }),
     defineField({
       name: 'duration',
@@ -103,7 +112,7 @@ export const lesson = defineType({
   preview: {
     select: {
       title: 'title',
-      media: 'poster',
+      media: 'thumbnail',
       freePreview: 'freePreview',
     },
     prepare({ title, media, freePreview }) {

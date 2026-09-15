@@ -11,7 +11,7 @@ export const LESSON_QUERY = defineQuery(/* groq */ `
     duration,
     freePreview,
     studentCount,
-    "poster": poster { ${imageFragment} },
+    "thumbnail": thumbnail { ${imageFragment} },
     notes,
     keyPoints,
     proTip,

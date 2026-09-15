@@ -49,6 +49,15 @@ export const course = defineType({
       title: 'Cover image',
       fieldset: 'marketing',
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Describes the cover for screen readers.',
+          validation: (rule) => rule.max(160),
+        }),
+      ],
     }),
     defineField({
       name: 'level',

@@ -1,5 +1,5 @@
 import { UserIcon } from '@sanity/icons'
-import { defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 import { slugValidation } from '../shared/slug'
 
@@ -27,25 +27,44 @@ export const instructor = defineType({
       type: 'image',
       title: 'Photo',
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Describes the photo for screen readers.',
+          validation: (rule) => rule.max(160),
+        }),
+      ],
     }),
     defineField({
       name: 'expertise',
-      type: 'string',
+      type: 'array',
       title: 'Expertise',
-      validation: (rule) => rule.max(80),
+      description: 'Areas the instructor teaches.',
+      of: [defineArrayMember({ type: 'string' })],
+      validation: (rule) => rule.min(1).error('Add at least one area of expertise'),
     }),
     defineField({
       name: 'bio',
-      type: 'text',
+      type: 'array',
       title: 'Bio',
-      rows: 6,
+      description: 'Rich text biography.',
+      of: [defineArrayMember({ type: 'block' })],
     }),
   ],
   preview: {
     select: {
       title: 'name',
-      subtitle: 'expertise',
+      expertise: 'expertise',
       media: 'photo',
+    },
+    prepare({ title, expertise, media }) {
+      return {
+        title: title || 'Untitled instructor',
+        subtitle: expertise?.[0],
+        media,
+      }
     },
   },
 })
