@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Bell, ChevronDown, ChevronRight } from "lucide-react"
+import { Bell, ChevronRight } from "lucide-react"
+import { SignedIn, UserButton } from "@neondatabase/auth-ui"
 import Link from "next/link"
 
 export interface NavigationProps extends React.HTMLAttributes<HTMLElement> {
@@ -82,19 +83,13 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
             </div>
           </div>
           <div className="flex items-center gap-6">
-            <button className="relative p-2 text-neutral-700 hover:text-primary-accent transition-all duration-300 hover:scale-110 hover:-rotate-12">
-              <Bell className="h-6 w-6" />
-              <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white animate-pulse" />
-            </button>
-            <button className="flex items-center gap-2 rounded-full p-1 transition-all duration-300 hover:bg-neutral-100 hover:scale-105">
-              <div className="h-11 w-11 rounded-full bg-gradient-to-br from-neutral-200 to-neutral-300 flex items-center justify-center overflow-hidden border-2 border-neutral-300 transition-all duration-300 hover:border-primary-accent hover:shadow-md">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="8" r="4" fill="#9CA3AF"/>
-                  <path d="M4 20C4 16.6863 6.68629 14 10 14H14C17.3137 14 20 16.6863 20 20V20H4V20Z" fill="#9CA3AF"/>
-                </svg>
-              </div>
-              <ChevronDown className="h-5 w-5 text-neutral-500 transition-transform duration-300 group-hover:rotate-180" />
-            </button>
+            <SignedIn>
+              <button className="relative p-2 text-neutral-700 hover:text-primary-accent transition-all duration-300 hover:scale-110 hover:-rotate-12">
+                <Bell className="h-6 w-6" />
+                <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white animate-pulse" />
+              </button>
+            </SignedIn>
+            <UserButton size="icon" className="size-11" />
           </div>
         </div>
       </nav>

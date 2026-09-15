@@ -1,30 +1,42 @@
-import { BarChart3, Clock, BookOpen, Users, ArrowRight, Bookmark } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { urlFor } from "@/sanity/lib/image"
-import type { COURSE_QUERY_RESULT } from "@/sanity.types"
+import {
+  BarChart3,
+  Clock,
+  BookOpen,
+  Users,
+  ArrowRight,
+  Bookmark,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { urlFor } from "@/sanity/lib/image";
+import type { COURSE_QUERY_RESULT } from "@/sanity.types";
 
-type Course = NonNullable<COURSE_QUERY_RESULT>
+type Course = NonNullable<COURSE_QUERY_RESULT>;
 
 function formatDuration(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / 3600)
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
-  if (hours === 0) return `${minutes}m`
-  if (minutes === 0) return `${hours}h`
-  return `${hours}h ${minutes}m`
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  if (hours === 0) return `${minutes}m`;
+  if (minutes === 0) return `${hours}h`;
+  return `${hours}h ${minutes}m`;
 }
 
 interface CourseHeroProps {
-  course: Course
-  totalDuration: number
-  moduleCount: number
-  lessonCount: number
+  course: Course;
+  totalDuration: number;
+  moduleCount: number;
+  lessonCount: number;
 }
 
-export function CourseHero({ course, totalDuration, moduleCount, lessonCount }: CourseHeroProps) {
+export function CourseHero({
+  course,
+  totalDuration,
+  moduleCount,
+  lessonCount,
+}: CourseHeroProps) {
   const imageUrl = course.coverImage?.asset?.url
     ? urlFor(course.coverImage).width(600).height(400).url()
-    : null
+    : null;
 
   return (
     <section className="relative overflow-hidden rounded-2xl bg-[#FBF7F4] px-8 py-12 lg:px-12">
@@ -46,7 +58,8 @@ export function CourseHero({ course, totalDuration, moduleCount, lessonCount }: 
           <div className="flex flex-wrap items-center gap-5 text-body text-neutral-500">
             <span className="flex items-center gap-1.5">
               <BarChart3 className="h-4 w-4" />
-              {course.level && course.level.charAt(0).toUpperCase() + course.level.slice(1)}
+              {course.level &&
+                course.level.charAt(0).toUpperCase() + course.level.slice(1)}
             </span>
             <span className="flex items-center gap-1.5">
               <Clock className="h-4 w-4" />
@@ -58,17 +71,20 @@ export function CourseHero({ course, totalDuration, moduleCount, lessonCount }: 
             </span>
             <span className="flex items-center gap-1.5">
               <Users className="h-4 w-4" />
-              {course.studentCount ? `${(course.studentCount / 1000).toFixed(1)}k` : "0"} students
+              {course.studentCount
+                ? `${(course.studentCount / 1000).toFixed(1)}k`
+                : "0"}{" "}
+              students
             </span>
           </div>
 
           <div className="flex items-center gap-4 pt-2">
             <Button variant="primary" size="lg" className="gap-2">
               Start Learning
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4.5 w-4.5" />
             </Button>
             <Button variant="secondary" size="lg" className="gap-2">
-              <Bookmark className="h-4 w-4" />
+              <Bookmark className="h-4.5 w-4.5" />
               Save for Later
             </Button>
           </div>
@@ -97,5 +113,5 @@ export function CourseHero({ course, totalDuration, moduleCount, lessonCount }: 
         </div>
       </div>
     </section>
-  )
+  );
 }

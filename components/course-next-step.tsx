@@ -1,14 +1,19 @@
-import { Target, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Target, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface CourseNextStepProps {
-  courseSlug: string
-  firstLessonSlug: string | null
+  courseSlug: string;
+  firstLessonSlug: string | null;
 }
 
-export function CourseNextStep({ courseSlug, firstLessonSlug }: CourseNextStepProps) {
-  const href = firstLessonSlug ? `/lesson/${firstLessonSlug}` : `/course/${courseSlug}`
+export function CourseNextStep({
+  courseSlug,
+  firstLessonSlug,
+}: CourseNextStepProps) {
+  const href = firstLessonSlug
+    ? `/lesson/${firstLessonSlug}`
+    : `/course/${courseSlug}`;
 
   return (
     <section className="rounded-2xl bg-[#FBF7F4] px-8 py-10">
@@ -30,10 +35,10 @@ export function CourseNextStep({ courseSlug, firstLessonSlug }: CourseNextStepPr
         <Link href={href}>
           <Button variant="primary" size="lg" className="gap-2">
             Continue Learning
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4.5 w-4.5" />
           </Button>
         </Link>
       </div>
     </section>
-  )
+  );
 }
