@@ -43,7 +43,7 @@ const StatusIndicator = React.forwardRef<HTMLSpanElement, StatusIndicatorProps>(
         ref={ref}
         {...props}
       >
-        {showIcon && <Icon className="h-4 w-4" />}
+        {showIcon && <Icon className="h-4.5 w-4.5" />}
         <span className="capitalize">
           {variant?.replace("-", " ") || "In Progress"}
         </span>

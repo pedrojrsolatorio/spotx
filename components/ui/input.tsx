@@ -23,7 +23,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes
   ({ className, ...props }, ref) => {
     return (
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+        <Search className="absolute left-3 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-neutral-500" />
         <input
           type="search"
           className={cn(
@@ -62,7 +62,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500 pointer-events-none" />
+        <ChevronDown className="absolute right-3 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-neutral-500 pointer-events-none" />
       </div>
     )
   }
