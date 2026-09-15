@@ -10,7 +10,7 @@ export interface NavigationProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
-  ({ className, activeRoute = "courses", ...props }, ref) => {
+  ({ className, activeRoute, ...props }, ref) => {
     const [scrolled, setScrolled] = React.useState(false)
 
     React.useEffect(() => {
@@ -34,7 +34,7 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
         {...props}
       >
         <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between">
-          <div className="flex items-center gap-12">
+          <div className="flex items-center gap-20">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,7 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
                 SpotX
               </span>
             </Link>
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-12">
               <Link
                 href="/courses"
                 className={cn(
