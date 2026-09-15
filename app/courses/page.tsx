@@ -16,7 +16,7 @@ export default async function CoursesPage() {
     <div className="min-h-screen bg-primary-100">
       <Navigation activeRoute="courses" />
       <main className="pt-28">
-        <AllCourses courses={courses} />
+        <AllCourses courses={courses} showViewAll={false} />
       </main>
       <Footer />
     </div>

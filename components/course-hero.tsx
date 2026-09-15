@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { urlFor } from "@/sanity/lib/image";
+import Link from "next/link";
 import type { COURSE_QUERY_RESULT } from "@/sanity.types";
 
 type Course = NonNullable<COURSE_QUERY_RESULT>;
@@ -26,6 +27,7 @@ interface CourseHeroProps {
   totalDuration: number;
   moduleCount: number;
   lessonCount: number;
+  firstLessonSlug?: string | null;
 }
 
 export function CourseHero({
@@ -33,6 +35,7 @@ export function CourseHero({
   totalDuration,
   moduleCount,
   lessonCount,
+  firstLessonSlug,
 }: CourseHeroProps) {
   const imageUrl = course.coverImage?.asset?.url
     ? urlFor(course.coverImage).width(600).height(400).url()
@@ -57,20 +60,20 @@ export function CourseHero({
 
           <div className="flex flex-wrap items-center gap-5 text-body text-neutral-500">
             <span className="flex items-center gap-1.5">
-              <BarChart3 className="h-4 w-4" />
+              <BarChart3 className="h-4.5 w-4.5" />
               {course.level &&
                 course.level.charAt(0).toUpperCase() + course.level.slice(1)}
             </span>
             <span className="flex items-center gap-1.5">
-              <Clock className="h-4 w-4" />
+              <Clock className="h-4.5 w-4.5" />
               {formatDuration(totalDuration)}
             </span>
             <span className="flex items-center gap-1.5">
-              <BookOpen className="h-4 w-4" />
+              <BookOpen className="h-4.5 w-4.5" />
               {moduleCount} modules
             </span>
             <span className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
+              <Users className="h-4.5 w-4.5" />
               {course.studentCount
                 ? `${(course.studentCount / 1000).toFixed(1)}k`
                 : "0"}{" "}
@@ -79,10 +82,12 @@ export function CourseHero({
           </div>
 
           <div className="flex items-center gap-4 pt-2">
-            <Button variant="primary" size="lg" className="gap-2">
-              Start Learning
-              <ArrowRight className="h-4.5 w-4.5" />
-            </Button>
+            <Link href={firstLessonSlug ? `/lesson/${firstLessonSlug}` : "#"}>
+              <Button variant="primary" size="lg" className="gap-2">
+                Start Learning
+                <ArrowRight className="h-4.5 w-4.5" />
+              </Button>
+            </Link>
             <Button variant="secondary" size="lg" className="gap-2">
               <Bookmark className="h-4.5 w-4.5" />
               Save for Later

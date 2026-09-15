@@ -53,6 +53,7 @@ export default async function CoursePage({ params }: Props) {
               totalDuration={totalDuration}
               moduleCount={moduleCount}
               lessonCount={lessonCount}
+              firstLessonSlug={firstLessonSlug}
             />
 
             <CourseLearningOutcomes learningOutcomes={course.learningOutcomes} />

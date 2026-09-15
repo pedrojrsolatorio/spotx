@@ -11,6 +11,7 @@ import {
   INSTRUCTOR_SLUGS_QUERY,
 } from './queries/instructor'
 import { LESSON_QUERY, LESSON_SLUGS_QUERY } from './queries/lesson'
+import type { LESSON_QUERY_RESULT } from '@/sanity.types'
 import { sanityFetch } from './live'
 
 export async function getCatalog(): Promise<CATALOG_QUERY_RESULT> {
@@ -37,9 +38,9 @@ export async function getCourseSlugs() {
   return data
 }
 
-export async function getLessonBySlug(slug: string) {
+export async function getLessonBySlug(slug: string): Promise<LESSON_QUERY_RESULT> {
   const { data } = await sanityFetch({ query: LESSON_QUERY, params: { slug } })
-  return data
+  return data as LESSON_QUERY_RESULT
 }
 
 export async function getLessonSlugs() {

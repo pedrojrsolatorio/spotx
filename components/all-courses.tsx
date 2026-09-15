@@ -13,10 +13,11 @@ type SanityCourse = FEATURED_COURSES_QUERY_RESULT[number]
 
 export interface AllCoursesProps extends React.HTMLAttributes<HTMLElement> {
   courses: SanityCourse[]
+  showViewAll?: boolean
 }
 
 const AllCourses = React.forwardRef<HTMLElement, AllCoursesProps>(
-  ({ className, courses, ...props }, ref) => (
+  ({ className, courses, showViewAll = true, ...props }, ref) => (
     <section
       ref={ref}
       className={cn("bg-white px-8 py-16", className)}
@@ -30,13 +31,15 @@ const AllCourses = React.forwardRef<HTMLElement, AllCoursesProps>(
             </h2>
             <div className="mt-3 h-1 w-16 bg-primary-accent" />
           </div>
-          <Link
-            href="/courses"
-            className="inline-flex items-center gap-2 text-base font-medium text-primary-accent hover:underline"
-          >
-            View all courses
-            <ArrowRight className="h-5 w-5" />
-          </Link>
+          {showViewAll && (
+            <Link
+              href="/courses"
+              className="inline-flex items-center gap-2 text-base font-medium text-primary-accent hover:underline"
+            >
+              View all courses
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          )}
         </div>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
@@ -88,15 +91,15 @@ const AllCourses = React.forwardRef<HTMLElement, AllCoursesProps>(
                   </p>
                   <div className="flex items-center gap-4 text-sm text-neutral-500">
                     <span className="flex items-center gap-1.5">
-                      <Users className="h-4 w-4" />
+                      <Users className="h-4.5 w-4.5" />
                       {course.level && course.level.charAt(0).toUpperCase() + course.level.slice(1)}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <BookOpen className="h-4 w-4" />
+                      <BookOpen className="h-4.5 w-4.5" />
                       {course.moduleCount} modules
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Clock className="h-4 w-4" />
+                      <Clock className="h-4.5 w-4.5" />
                       {course.lessonCount} lessons
                     </span>
                   </div>

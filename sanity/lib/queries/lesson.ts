@@ -26,6 +26,8 @@ export const LESSON_QUERY = defineQuery(/* groq */ `
       _id,
       title,
       "slug": slug.current,
+      summary,
+      level,
       "instructor": instructor->{ ${instructorFragment} },
       modules[] {
         _key,

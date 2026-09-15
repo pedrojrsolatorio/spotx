@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import posthog from "posthog-js"
-import { List, ChevronDown, Clock } from "lucide-react"
+import { List, ChevronDown, Clock, Play } from "lucide-react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import type { COURSE_QUERY_RESULT } from "@/sanity.types"
@@ -34,6 +35,7 @@ interface CourseContentProps {
 
 export function CourseContent({ modules, totalDuration, moduleCount }: CourseContentProps) {
   const [expanded, setExpanded] = React.useState(false)
+  const [openModules, setOpenModules] = React.useState<Set<number>>(new Set([0]))
   const allModules = modules ?? []
   const visible = expanded ? allModules : allModules.slice(0, VISIBLE_COUNT)
   const hasMore = allModules.length > VISIBLE_COUNT
@@ -51,6 +53,15 @@ export function CourseContent({ modules, totalDuration, moduleCount }: CourseCon
         module_count: allModules.length,
       })
     }
+  }
+
+  const toggleModule = (idx: number) => {
+    setOpenModules((prev) => {
+      const next = new Set(prev)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
   }
 
   return (
@@ -73,7 +84,13 @@ export function CourseContent({ modules, totalDuration, moduleCount }: CourseCon
 
       <div className="space-y-3">
         {visible.map((mod, index) => (
-          <ModuleCard key={mod._key} module_={mod} index={index + 1} />
+          <ModuleCard
+            key={mod._key}
+            module_={mod}
+            index={index + 1}
+            isOpen={openModules.has(index)}
+            onToggle={() => toggleModule(index)}
+          />
         ))}
       </div>
 
@@ -88,7 +105,7 @@ export function CourseContent({ modules, totalDuration, moduleCount }: CourseCon
             {expanded ? "Show fewer modules" : `View all ${allModules.length} modules`}
             <ChevronDown
               className={cn(
-                "h-4 w-4 transition-transform duration-200",
+                "h-4.5 w-4.5 transition-transform duration-200",
                 expanded && "rotate-180"
               )}
             />
@@ -99,13 +116,23 @@ export function CourseContent({ modules, totalDuration, moduleCount }: CourseCon
   )
 }
 
-function ModuleCard({ module_, index }: { module_: ModuleItem; index: number }) {
+interface ModuleCardProps {
+  module_: ModuleItem
+  index: number
+  isOpen: boolean
+  onToggle: () => void
+}
+
+function ModuleCard({ module_, index, isOpen, onToggle }: ModuleCardProps) {
   const duration = getModuleDuration(module_.lessons)
   const lessonCount = module_.lessons?.length ?? 0
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm">
-      <div className="flex items-start gap-4">
+    <div className="rounded-lg border border-neutral-200 bg-white shadow-sm overflow-hidden">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center gap-4 p-5 text-left transition-colors hover:bg-neutral-50"
+      >
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-accent/10 text-body-large font-bold text-primary-accent font-poppins">
           {index}
         </div>
@@ -127,7 +154,38 @@ function ModuleCard({ module_, index }: { module_: ModuleItem; index: number }) 
             </span>
           </div>
         </div>
-      </div>
+        <ChevronDown
+          className={cn(
+            "h-4.5 w-4.5 shrink-0 text-neutral-400 transition-transform duration-200",
+            isOpen && "rotate-180"
+          )}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="border-t border-neutral-100">
+          {module_.lessons?.map((lesson, lIdx) => (
+            <Link
+              key={lesson._id}
+              href={`/lesson/${lesson.slug}`}
+              className="group flex items-center gap-4 px-5 py-3 pl-[4.5rem] transition-colors hover:bg-neutral-50"
+            >
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-xs font-medium text-neutral-500 group-hover:bg-primary-accent/10 group-hover:text-primary-accent transition-colors">
+                {lIdx + 1}
+              </span>
+              <span className="flex-1 min-w-0 truncate text-body text-neutral-700 group-hover:text-primary-accent transition-colors">
+                {lesson.title}
+              </span>
+              <Play className="h-3.5 w-3.5 shrink-0 text-neutral-300 group-hover:text-primary-accent transition-colors" />
+              {lesson.duration && (
+                <span className="w-12 shrink-0 text-right text-small text-neutral-500">
+                  {formatDuration(lesson.duration)}
+                </span>
+              )}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

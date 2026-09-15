@@ -56,7 +56,7 @@ const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           disabled={currentPage === 1}
           className="flex h-10 w-10 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-4.5 w-4.5" />
         </button>
         {getPageNumbers().map((page, index) =>
           page === "ellipsis" ? (
@@ -64,7 +64,7 @@ const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
               key={`ellipsis-${index}`}
               className="flex h-10 w-10 items-center justify-center text-neutral-500"
             >
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="h-4.5 w-4.5" />
             </span>
           ) : (
             <button
@@ -86,7 +86,7 @@ const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
           disabled={currentPage === totalPages}
           className="flex h-10 w-10 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4.5 w-4.5" />
         </button>
       </nav>
     )
