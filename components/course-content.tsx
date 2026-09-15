@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import posthog from "posthog-js"
 import { List, ChevronDown, Clock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -37,6 +38,21 @@ export function CourseContent({ modules, totalDuration, moduleCount }: CourseCon
   const visible = expanded ? allModules : allModules.slice(0, VISIBLE_COUNT)
   const hasMore = allModules.length > VISIBLE_COUNT
 
+  const handleExpandedToggle = () => {
+    const nextExpanded = !expanded
+    setExpanded(nextExpanded)
+
+    if (
+      process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+      process.env.NEXT_PUBLIC_POSTHOG_HOST
+    ) {
+      posthog.capture("course_modules_toggled", {
+        expanded: nextExpanded,
+        module_count: allModules.length,
+      })
+    }
+  }
+
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between">
@@ -66,7 +82,7 @@ export function CourseContent({ modules, totalDuration, moduleCount }: CourseCon
           <Button
             variant="tertiary"
             size="sm"
-            onClick={() => setExpanded(!expanded)}
+            onClick={handleExpandedToggle}
             className="gap-2"
           >
             {expanded ? "Show fewer modules" : `View all ${allModules.length} modules`}

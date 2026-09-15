@@ -1,4 +1,7 @@
+"use client"
+
 import * as React from "react"
+import posthog from "posthog-js"
 import { cn } from "@/lib/utils"
 import { ArrowRight, Clock, BookOpen, Users } from "lucide-react"
 import Link from "next/link"
@@ -37,7 +40,24 @@ const AllCourses = React.forwardRef<HTMLElement, AllCoursesProps>(
         </div>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
-            <Link key={course._id} href={`/course/${course.slug}`}>
+            <Link
+              key={course._id}
+              href={`/course/${course.slug}`}
+              onClick={() => {
+                if (
+                  process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+                  process.env.NEXT_PUBLIC_POSTHOG_HOST
+                ) {
+                  posthog.capture("course_selected", {
+                    course_id: course._id,
+                    course_slug: course.slug,
+                    level: course.level,
+                    module_count: course.moduleCount,
+                    lesson_count: course.lessonCount,
+                  })
+                }
+              }}
+            >
               <Card className="group h-full transition-shadow hover:shadow-lg cursor-pointer overflow-hidden rounded-2xl">
                 <div className="relative h-56 overflow-hidden">
                   {course.coverImage?.asset?.url ? (

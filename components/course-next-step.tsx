@@ -1,4 +1,7 @@
+"use client";
+
 import { Target, ArrowRight } from "lucide-react";
+import posthog from "posthog-js";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -32,7 +35,20 @@ export function CourseNextStep({
           </div>
         </div>
 
-        <Link href={href}>
+        <Link
+          href={href}
+          onClick={() => {
+            if (
+              process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
+              process.env.NEXT_PUBLIC_POSTHOG_HOST
+            ) {
+              posthog.capture("course_learning_started", {
+                course_slug: courseSlug,
+                has_first_lesson: Boolean(firstLessonSlug),
+              });
+            }
+          }}
+        >
           <Button variant="primary" size="lg" className="gap-2">
             Continue Learning
             <ArrowRight className="h-4.5 w-4.5" />
