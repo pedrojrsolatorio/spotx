@@ -192,3 +192,11 @@ After you implement, run the type check and lint at minimum, add a build when ro
 # 14. When in doubt
 
 Keep it small. Use the relevant skill. Preserve the server and client boundaries and the private token rule. Match the provided UI exactly. Get specifics from setup and config instead of hardcoding them. Save a prompt and get approval before coding. Run the checks. Share exact test steps.
+
+---
+
+# 15. Sensitive files
+
+- Before reading any sensitive file (`.env`, `.env.local`, tokens, private keys, credentials), ask the user for confirmation first — including for the purpose.
+- When inspecting one, print only key names, never key values (mask values as `<set>`). If the value itself is needed to debug, say so and get explicit consent before revealing it.
+- Do not commit secrets to the repository; keep them in env files and `.env.example` as names only.

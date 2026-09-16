@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typegen": "sanity schemas extract --enforce-required-fields && sanity typegen generate"
+    "typegen": "sanity schemas extract --enforce-required-fields && sanity typegen generate",
+    "ingest:videos": "node app/studio/scripts/ingest/ingest-videos.mjs",
+    "test:ingest": "node --test app/studio/scripts/ingest/ingest-videos.test.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.70",

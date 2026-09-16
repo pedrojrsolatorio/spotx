@@ -4,6 +4,7 @@ import { generateText, Output, stepCountIs } from "ai";
 import { SEARCH_SYSTEM_PROMPT } from "@/lib/search/system-prompt";
 import { createSearchContext } from "@/lib/search/sanity-context";
 import { searchResponseSchema } from "@/lib/search/schema";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const DEFAULT_MODEL = "gemini-2.5-pro";
 const MAX_STEPS = 20;
@@ -35,6 +36,11 @@ export async function GET(req: Request) {
     );
   }
 
+  const startedAt = Date.now();
+  const distinctId =
+    req.headers.get("x-posthog-distinct-id") ?? crypto.randomUUID();
+  const posthog = getPostHogClient();
+
   let searchContext: Awaited<ReturnType<typeof createSearchContext>> | null = null;
 
   try {
@@ -61,11 +67,40 @@ export async function GET(req: Request) {
 
     await searchContext.mcpClient.close();
 
+    if (posthog) {
+      posthog.capture({
+        distinctId,
+        event: "search_performed",
+        properties: {
+          query,
+          result_count: result.output.count,
+          course_count: result.output.courseCount,
+          duration_ms: Date.now() - startedAt,
+          model: process.env.SEARCH_MODEL || DEFAULT_MODEL,
+          success: true,
+        },
+      });
+      await posthog.flush();
+    }
+
     return Response.json(result.output);
   } catch (error) {
     await searchContext?.mcpClient.close();
 
     console.error("Search failed:", error);
+
+    if (posthog) {
+      posthog.capture({
+        distinctId,
+        event: "search_failed",
+        properties: {
+          query,
+          duration_ms: Date.now() - startedAt,
+        },
+      });
+      posthog.captureException(error, distinctId, { query });
+      await posthog.flush();
+    }
 
     return Response.json(
       {
