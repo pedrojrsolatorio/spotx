@@ -26,7 +26,7 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
       <nav
         ref={ref}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-5 transition-all duration-300",
+          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-5 transition-all duration-300 sm:px-6 lg:px-8",
           scrolled
             ? "bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20"
             : "bg-white/60 backdrop-blur-sm",
@@ -35,7 +35,7 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
         {...props}
       >
         <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between">
-          <div className="flex items-center gap-20">
+          <div className="flex items-center gap-8 md:gap-20">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

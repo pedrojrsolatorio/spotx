@@ -35,6 +35,25 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
   const [error, setError] = React.useState<string | null>(null)
   const [sort, setSort] = React.useState<SortMode>("relevant")
   const [sortOpen, setSortOpen] = React.useState(false)
+  const searchInputRef = React.useRef<HTMLInputElement>(null)
+
+  const isMac = React.useSyncExternalStore(
+    () => () => {},
+    () => /mac/i.test(navigator.userAgent),
+    () => false,
+  )
+
+  React.useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const mod = isMac ? e.metaKey : e.ctrlKey
+      if (!mod || e.key.toLowerCase() !== "k") return
+      e.preventDefault()
+      searchInputRef.current?.focus()
+      searchInputRef.current?.select()
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [isMac])
 
   React.useEffect(() => {
     if (!query) return
@@ -87,7 +106,7 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
   }
 
   return (
-    <section className="px-8">
+    <section className="px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[960px]">
         <div className="mb-6 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="flex-1">
@@ -97,7 +116,7 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
                 Search Results
               </span>
             </div>
-            <h1 className="text-4xl font-semibold text-primary-500 font-poppins">
+            <h1 className="text-2xl md:text-4xl font-semibold text-primary-500 font-poppins">
               Results for{" "}
               <span className="text-primary-accent italic">
                 &ldquo;{query}&rdquo;
@@ -121,21 +140,22 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
             <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 shadow-sm">
               <Search className="h-5 w-5 text-neutral-400" />
               <input
+                ref={searchInputRef}
                 type="search"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Search courses..."
-                className="w-48 border-0 bg-transparent text-sm placeholder:text-neutral-400 focus:outline-none lg:w-64"
+                className="w-full border-0 bg-transparent text-sm placeholder:text-neutral-400 focus:outline-none sm:w-48 lg:w-64"
               />
               <kbd className="hidden rounded border border-neutral-200 bg-neutral-50 px-1.5 py-0.5 text-[10px] font-medium text-neutral-400 sm:inline">
-                ⌘K
+                {isMac ? "⌘K" : "Ctrl+K"}
               </kbd>
             </div>
           </form>
         </div>
 
         {!query ? (
-          <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-8 py-16 text-center">
+            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-4 py-10 text-center sm:px-6 sm:py-16 lg:px-8">
             <Search className="mx-auto mb-4 h-10 w-10 text-neutral-300" />
             <p className="text-lg font-medium text-primary-500 mb-2">
               Ask a question in plain English
@@ -159,7 +179,7 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
             ))}
           </div>
         ) : error ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-8 py-10">
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
             <h2 className="text-lg font-medium text-red-700 mb-2">
               Search is unavailable right now
             </h2>
@@ -171,7 +191,7 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
           </div>
         ) : data && data.count === 0 ? (
           <>
-            <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-8 py-16 text-center">
+          <div className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-4 py-10 text-center sm:px-6 sm:py-16 lg:px-8">
               <Search className="mx-auto mb-4 h-10 w-10 text-neutral-300" />
               <h2 className="text-xl font-medium text-primary-500 mb-2">
                 No results for &quot;{query}&quot;
@@ -272,7 +292,7 @@ function SearchResultsPanel({ query }: SearchResultsProps) {
 function BrowseAllCoursesCTA() {
   return (
     <div className="mt-12 overflow-hidden rounded-2xl bg-primary-accent/5 border border-primary-accent/20">
-      <div className="flex flex-col items-center gap-6 px-8 py-10 sm:flex-row sm:justify-between">
+      <div className="flex flex-col items-center gap-6 px-4 py-8 sm:px-8 sm:py-10 sm:flex-row sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-accent/10">
             <Search className="h-6 w-6 text-primary-accent" />

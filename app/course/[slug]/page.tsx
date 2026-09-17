@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
+import { Footer } from "@/components/footer"
 import { CourseHero } from "@/components/course-hero"
 import { CourseLearningOutcomes } from "@/components/course-learning-outcomes"
 import { CourseContent } from "@/components/course-content"
@@ -42,10 +43,10 @@ export default async function CoursePage({ params }: Props) {
   const firstLessonSlug = course.modules?.[0]?.lessons?.[0]?.slug ?? null
 
   return (
-    <div className="min-h-screen bg-primary-100">
+    <div className="flex min-h-screen flex-col bg-primary-100">
       <Navigation activeRoute="courses" />
 
-      <main className="mx-auto max-w-7xl px-4 pt-28 pb-16 sm:px-6 lg:px-8">
+      <main className="flex-1 mx-auto max-w-7xl px-4 pt-28 pb-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
           <div className="space-y-10">
             <CourseHero
@@ -76,6 +77,7 @@ export default async function CoursePage({ params }: Props) {
           </aside>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

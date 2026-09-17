@@ -101,9 +101,9 @@ export default async function LessonPage({
   const lessonLabel = `Lesson ${moduleIndex + 1}.${lessonIndex + 1}`
 
   return (
-    <div className="min-h-screen bg-primary-100">
+    <div className="flex min-h-screen flex-col bg-primary-100">
       <Navigation activeRoute="courses" />
-      <main className="pt-28 pb-16 px-8">
+      <main className="flex-1 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-[1440px]">
           <div className="flex flex-col lg:flex-row gap-8">
             <LessonSidebar

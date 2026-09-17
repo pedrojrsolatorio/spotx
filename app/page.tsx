@@ -8,9 +8,9 @@ export default async function Home() {
   const courses = await getFeaturedCourses()
 
   return (
-    <div className="min-h-screen bg-primary-100">
+    <div className="flex min-h-screen flex-col bg-primary-100">
       <Navigation />
-      <main>
+      <main className="flex-1">
         <Hero />
         <AllCourses courses={courses} />
       </main>

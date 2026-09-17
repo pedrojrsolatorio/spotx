@@ -168,7 +168,7 @@ function ModuleCard({ module_, index, isOpen, onToggle }: ModuleCardProps) {
             <Link
               key={lesson._id}
               href={`/lesson/${lesson.slug}`}
-              className="group flex items-center gap-4 px-5 py-3 pl-[4.5rem] transition-colors hover:bg-neutral-50"
+              className="group flex items-center gap-4 px-5 py-3 pl-8 transition-colors hover:bg-neutral-50 lg:pl-[4.5rem]"
             >
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-xs font-medium text-neutral-500 group-hover:bg-primary-accent/10 group-hover:text-primary-accent transition-colors">
                 {lIdx + 1}

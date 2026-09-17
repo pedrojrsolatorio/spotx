@@ -200,3 +200,20 @@ Keep it small. Use the relevant skill. Preserve the server and client boundaries
 - Before reading any sensitive file (`.env`, `.env.local`, tokens, private keys, credentials), ask the user for confirmation first — including for the purpose.
 - When inspecting one, print only key names, never key values (mask values as `<set>`). If the value itself is needed to debug, say so and get explicit consent before revealing it.
 - Do not commit secrets to the repository; keep them in env files and `.env.example` as names only.
+
+---
+
+# 16. Git commits and pushes
+
+- Never commit, amend, push, or create a pull request unless the user explicitly asks you to. This includes `git add`, `git commit`, `git push`, and `gh pr create`.
+- Only run read-only git commands (`git status`, `git diff`, `git log`, `git branch`) without permission.
+- Leave file changes unstaged so the user decides when and how to group commits.
+- When the user does ask you to commit, propose a commit message and let the user confirm before running it.
+
+---
+
+# 17. Branches
+
+- Never switch branches (`git checkout`, `git switch`) unless the user explicitly tells you to, and do not move work between branches on your own.
+- If you notice the working branch differs from the branch you expected, stop and ask the user before doing anything about it.
+- When the user asks you to move work to another branch, confirm the target branch with them first.

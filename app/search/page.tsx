@@ -18,9 +18,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = (q ?? "").trim()
 
   return (
-    <div className="min-h-screen bg-primary-100">
+    <div className="flex min-h-screen flex-col bg-primary-100">
       <Navigation />
-      <main className="pt-28 pb-16">
+      <main className="flex-1 pt-28 pb-16">
         <SearchResults query={query} />
       </main>
       <Footer />

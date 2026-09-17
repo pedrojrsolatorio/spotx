@@ -42,7 +42,7 @@ export function CourseHero({
     : null;
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-[#FBF7F4] px-8 py-12 lg:px-12">
+    <section className="relative overflow-hidden rounded-2xl bg-[#FBF7F4] px-4 py-8 sm:px-6 sm:py-10 lg:px-12 lg:py-12">
       <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-primary-accent/5 blur-3xl" />
       <div className="absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-primary-accent/8 blur-2xl" />
 

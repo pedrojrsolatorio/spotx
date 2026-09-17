@@ -1,38 +1,57 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import posthog from "posthog-js"
-import { cn } from "@/lib/utils"
-import { Search, ArrowRight, Lightbulb } from "lucide-react"
-import Link from "next/link"
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
+import { cn } from "@/lib/utils";
+import { Search, ArrowRight, Lightbulb } from "lucide-react";
+import Link from "next/link";
 
 const posthogConfigured = Boolean(
   process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN &&
-    process.env.NEXT_PUBLIC_POSTHOG_HOST,
-)
+  process.env.NEXT_PUBLIC_POSTHOG_HOST,
+);
 
 const Hero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   ({ className, ...props }, ref) => {
-    const router = useRouter()
-    const [query, setQuery] = React.useState("")
+    const router = useRouter();
+    const [query, setQuery] = React.useState("");
+    const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+    const isMac = React.useSyncExternalStore(
+      () => () => {},
+      () => /mac/i.test(navigator.userAgent),
+      () => false,
+    );
+
+    React.useEffect(() => {
+      const onKeyDown = (e: KeyboardEvent) => {
+        const mod = isMac ? e.metaKey : e.ctrlKey;
+        if (!mod || e.key.toLowerCase() !== "k") return;
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
+      };
+      window.addEventListener("keydown", onKeyDown);
+      return () => window.removeEventListener("keydown", onKeyDown);
+    }, [isMac]);
 
     const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      const trimmed = query.trim()
-      if (!trimmed) return
+      e.preventDefault();
+      const trimmed = query.trim();
+      if (!trimmed) return;
       if (posthogConfigured) {
-        posthog.capture("search_started", { query: trimmed })
+        posthog.capture("search_started", { query: trimmed });
       }
-      router.push(`/search?q=${encodeURIComponent(trimmed)}`)
-    }
+      router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    };
 
     return (
       <section
         ref={ref}
         className={cn(
-          "relative overflow-hidden bg-primary-100 px-8 pt-36 pb-16 md:pt-44 md:pb-24",
-          className
+          "relative overflow-hidden bg-primary-100 px-4 pt-20 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:pt-36 md:pb-20 lg:px-8 lg:pt-44 lg:pb-24",
+          className,
         )}
         {...props}
       >
@@ -43,7 +62,7 @@ const Hero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
                 <span className="text-primary-accent">✦</span>
                 INTELLIGENT LEARNING
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-primary-500 font-poppins mb-6 leading-tight">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-primary-500 font-poppins mb-6 leading-tight">
                 Search your learning in plain English.
               </h1>
               <p className="text-lg text-neutral-700 mb-8 max-w-lg leading-relaxed">
@@ -52,21 +71,26 @@ const Hero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
               </p>
               <form onSubmit={handleSubmit} className="mb-8">
                 <div className="flex items-center rounded-2xl border border-neutral-200 bg-white p-2 shadow-sm max-w-lg">
-                  <Search className="ml-3 h-5 w-5 text-neutral-400" />
                   <input
+                    ref={searchInputRef}
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Ask anything about your learning..."
                     className="flex-1 border-0 bg-transparent px-4 py-3 text-base placeholder:text-neutral-400 focus:outline-none"
                   />
-                  <button
-                    type="submit"
-                    className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary-accent text-white transition-colors hover:bg-primary-accent/90"
-                    aria-label="Search"
-                  >
-                    <Search className="h-5 w-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <kbd className="hidden rounded border border-neutral-200 bg-neutral-50 px-1.5 py-0.5 text-[10px] font-medium text-neutral-400 sm:inline">
+                      {isMac ? "⌘K" : "Ctrl+K"}
+                    </kbd>
+                    <button
+                      type="submit"
+                      className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary-accent text-white transition-colors hover:bg-primary-accent/90"
+                      aria-label="Search"
+                    >
+                      <Search className="h-5 w-5" />
+                    </button>
+                  </div>
                 </div>
               </form>
               <Link
@@ -78,14 +102,17 @@ const Hero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
               </Link>
             </div>
             <div className="relative">
+              <div className="absolute inset-0 flex items-center justify-end">
+                <div className="h-80 w-80 rounded-full bg-primary-accent/20" />
+              </div>
               <div className="relative z-10">
                 <img
-                  src="/hero-illustration.svg"
+                  src="/hero-illustration.jpg"
                   alt="Student learning"
-                  className="w-full max-w-lg mx-auto"
+                  className="w-full max-w-lg mx-auto rounded-2xl object-cover"
                 />
               </div>
-              <div className="absolute top-8 right-8 z-20 flex items-center gap-3 rounded-2xl bg-white p-4 shadow-lg">
+              <div className="hidden sm:flex absolute top-8 right-8 z-20 items-center gap-3 rounded-2xl bg-white p-4 shadow-lg">
                 <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-primary-accent/10">
                   <Lightbulb className="h-7.5 w-7.5 text-primary-accent" />
                 </div>
@@ -103,9 +130,9 @@ const Hero = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary-100/0 to-transparent" />
       </section>
-    )
-  }
-)
-Hero.displayName = "Hero"
+    );
+  },
+);
+Hero.displayName = "Hero";
 
-export { Hero }
+export { Hero };
