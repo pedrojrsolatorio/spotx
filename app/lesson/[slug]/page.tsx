@@ -10,6 +10,7 @@ import { LessonInfoCard } from "@/components/lesson-info-card"
 import { LessonKeyPoints } from "@/components/lesson-key-points"
 import { LessonProTip } from "@/components/lesson-pro-tip"
 import { LessonResources } from "@/components/lesson-resources"
+import { LessonTracker } from "@/components/lesson-tracker"
 import { getLessonBySlug, getLessonSlugs } from "@/sanity/lib/data"
 
 type Params = Promise<{ slug: string }>
@@ -96,6 +97,8 @@ export default async function LessonPage({
   const { moduleIndex, lessonIndex } = position
   const nextLessonSlug = getNextLessonSlug(lesson.course.modules, moduleIndex, lessonIndex)
   const startSeconds = start ? parseInt(start, 10) : undefined
+  const moduleLabel = `Module ${moduleIndex + 1}`
+  const lessonLabel = `Lesson ${moduleIndex + 1}.${lessonIndex + 1}`
 
   return (
     <div className="min-h-screen bg-primary-100">
@@ -122,6 +125,14 @@ export default async function LessonPage({
                   <LessonVideoPlayer
                     videoUrl={lesson.videoUrl}
                     startSeconds={startSeconds}
+                    tracking={{
+                      lessonSlug: slug,
+                      lessonTitle: lesson.title,
+                      courseTitle: lesson.course.title,
+                      courseSlug: lesson.course.slug!,
+                      moduleLabel,
+                      lessonLabel,
+                    }}
                   />
                 </div>
                 <div className="w-full lg:w-72 shrink-0">
@@ -133,6 +144,16 @@ export default async function LessonPage({
                   />
                 </div>
               </div>
+
+              <LessonTracker
+                courseSlug={lesson.course.slug!}
+                courseTitle={lesson.course.title}
+                lessonSlug={slug}
+                moduleLabel={moduleLabel}
+                lessonLabel={lessonLabel}
+                freePreview={lesson.freePreview ?? false}
+                startSeconds={startSeconds ?? 0}
+              />
 
               {lesson.notes && (
                 <div className="rounded-2xl bg-white p-6 shadow-sm border border-neutral-100">

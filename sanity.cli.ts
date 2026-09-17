@@ -21,4 +21,7 @@ export default defineCliConfig({
     generates: './sanity.types.ts',
     overloadClientMethods: true,
   },
+  deployment: {
+    appId: 'b8kskmobkyylhnli4ytcf1pk',
+  },
 })

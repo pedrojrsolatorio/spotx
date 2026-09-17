@@ -42,4 +42,10 @@ yarn-error.log*
 next-env.d.ts
 .neon
 
+# sanity studio runtime
+.sanity/
+
+# production build output
+/dist
+
 app/studio/scripts/

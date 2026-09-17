@@ -7,9 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typegen": "sanity schemas extract --enforce-required-fields && sanity typegen generate"
+    "typegen": "sanity schemas extract --enforce-required-fields && sanity typegen generate",
+    "ingest:videos": "node app/studio/scripts/ingest/ingest-videos.mjs",
+    "test:ingest": "node --test app/studio/scripts/ingest/ingest-videos.test.mjs"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.70",
+    "@ai-sdk/mcp": "^2.0.49",
     "@neon/config": "^1.4.2",
     "@neon/env": "^1.3.2",
     "@neondatabase/auth": "^0.5.0-beta",
@@ -19,6 +23,7 @@
     "@sanity/icons": "^3.8.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.2",
+    "ai": "^7.0.101",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
@@ -33,7 +38,8 @@
     "react-dom": "19.2.8",
     "sanity": "^5.31.2",
     "styled-components": "^6.5.3",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

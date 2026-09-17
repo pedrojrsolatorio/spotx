@@ -1,10 +1,26 @@
 "use client"
 
-import { cn } from "@/lib/utils"
+import {
+  type VideoAnalyticsContext,
+  useLessonVideoAnalytics,
+} from "@/lib/video-tracking"
 
-interface LessonVideoPlayerProps {
-  videoUrl: string
-  startSeconds?: number
+function buildYouTubeEmbedUrl(
+  videoId: string,
+  startSeconds?: number,
+): string {
+  const params = new URLSearchParams({
+    autoplay: "1",
+    rel: "0",
+    enablejsapi: "1",
+    origin: typeof window !== "undefined" ? window.location.origin : "",
+  })
+  if (startSeconds) params.set("start", String(startSeconds))
+  return `https://www.youtube.com/embed/${videoId}?${params.toString()}`
+}
+
+function buildVimeoEmbedUrl(videoId: string): string {
+  return `https://player.vimeo.com/video/${videoId}?autoplay=1`
 }
 
 function parseYouTubeId(url: string): string | null {
@@ -25,16 +41,31 @@ function parseVimeoId(url: string): string | null {
   return m ? m[1] : null
 }
 
-export function LessonVideoPlayer({ videoUrl, startSeconds }: LessonVideoPlayerProps) {
+export interface LessonVideoPlayerProps {
+  videoUrl: string
+  startSeconds?: number
+  tracking?: VideoAnalyticsContext
+}
+
+export function LessonVideoPlayer({
+  videoUrl,
+  startSeconds,
+  tracking,
+}: LessonVideoPlayerProps) {
   const ytId = parseYouTubeId(videoUrl)
   const vimeoId = parseVimeoId(videoUrl)
 
+  const { iframeRef, onFrameLoad } = useLessonVideoAnalytics({
+    videoUrl,
+    startSeconds,
+    context: tracking,
+  })
+
   let embedUrl = ""
   if (ytId) {
-    const params = startSeconds ? `?start=${startSeconds}` : ""
-    embedUrl = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0${startSeconds ? `&start=${startSeconds}` : ""}`
+    embedUrl = buildYouTubeEmbedUrl(ytId, startSeconds)
   } else if (vimeoId) {
-    embedUrl = `https://player.vimeo.com/video/${vimeoId}?autoplay=1`
+    embedUrl = buildVimeoEmbedUrl(vimeoId)
   } else {
     embedUrl = videoUrl
   }
@@ -43,11 +74,13 @@ export function LessonVideoPlayer({ videoUrl, startSeconds }: LessonVideoPlayerP
     <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-neutral-900">
       {embedUrl ? (
         <iframe
+          ref={iframeRef}
           src={embedUrl}
           className="absolute inset-0 h-full w-full"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           title="Lesson video"
+          onLoad={onFrameLoad}
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center text-neutral-500">
