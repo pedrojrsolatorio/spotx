@@ -13,9 +13,9 @@ export default async function CoursesPage() {
   const courses = await getCatalog()
 
   return (
-    <div className="min-h-screen bg-primary-100">
+    <div className="flex min-h-screen flex-col bg-primary-100">
       <Navigation activeRoute="courses" />
-      <main className="pt-28">
+      <main className="flex-1 pt-28">
         <AllCourses courses={courses} showViewAll={false} />
       </main>
       <Footer />

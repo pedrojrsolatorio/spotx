@@ -20,7 +20,7 @@ const AllCourses = React.forwardRef<HTMLElement, AllCoursesProps>(
   ({ className, courses, showViewAll = true, ...props }, ref) => (
     <section
       ref={ref}
-      className={cn("bg-white px-8 py-16", className)}
+      className={cn("bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8", className)}
       {...props}
     >
       <div className="mx-auto max-w-[1440px]">
