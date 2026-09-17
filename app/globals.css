@@ -118,8 +118,8 @@
   --neon-secondary-foreground: #172a39;
   --neon-muted: #f2f4f6;
   --neon-muted-foreground: #6e7575;
-  --neon-accent: #f2f4f6;
-  --neon-accent-foreground: #172a39;
+  --neon-accent: #fc563c;
+  --neon-accent-foreground: #ffffff;
   --neon-destructive: #ef4444;
   --neon-destructive-foreground: #ffffff;
   --neon-border: #e9e4e0;
@@ -129,6 +129,15 @@
 
   background: #ffffff;
   color: #172a39;
+}
+
+/* Password toggle eye icon: always visible, never hidden on hover */
+.auth-ui-scope .relative button[type="button"] {
+  color: var(--neon-muted-foreground, #6e7575);
+}
+.auth-ui-scope .relative button[type="button"]:hover {
+  color: var(--neon-foreground, #172a39);
+  background: transparent;
 }
 
 @media (prefers-color-scheme: dark) {

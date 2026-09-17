@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Bell, ChevronRight } from "lucide-react"
-import { SignedIn, UserButton } from "@neondatabase/auth-ui"
+import { SignedIn, SignedOut, UserButton } from "@neondatabase/auth-ui"
 import Link from "next/link"
 
 export interface NavigationProps extends React.HTMLAttributes<HTMLElement> {
@@ -89,7 +89,17 @@ const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
                 <span className="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white animate-pulse" />
               </button>
             </SignedIn>
-            <UserButton size="icon" className="size-11" />
+            <SignedIn>
+              <UserButton size="icon" className="size-11" />
+            </SignedIn>
+            <SignedOut>
+              <Link
+                href="/auth/sign-in"
+                className="text-sm font-medium text-primary-500 transition-colors hover:text-primary-accent"
+              >
+                Sign in
+              </Link>
+            </SignedOut>
           </div>
         </div>
       </nav>
