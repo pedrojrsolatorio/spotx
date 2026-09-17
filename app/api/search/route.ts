@@ -1,10 +1,11 @@
 import { google } from "@ai-sdk/google";
 import { generateText, Output, stepCountIs } from "ai";
 
+import { getPostHogClient } from "@/lib/posthog-server";
+import { checkSearchRateLimit } from "@/lib/rate-limit";
 import { SEARCH_SYSTEM_PROMPT } from "@/lib/search/system-prompt";
 import { createSearchContext } from "@/lib/search/sanity-context";
 import { searchResponseSchema } from "@/lib/search/schema";
-import { getPostHogClient } from "@/lib/posthog-server";
 
 const DEFAULT_MODEL = "gemini-2.5-pro";
 const MAX_STEPS = 20;
@@ -21,6 +22,9 @@ ${
 }
 
 export async function GET(req: Request) {
+  const rateLimited = checkSearchRateLimit(req);
+  if (rateLimited) return rateLimited;
+
   const query = (new URL(req.url).searchParams.get("q") ?? "")
     .trim()
     .slice(0, MAX_QUERY_LENGTH);
